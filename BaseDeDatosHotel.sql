@@ -434,13 +434,13 @@ create table impuesto_huesped(
 ) engine = InnoDB default char set=latin1;
 
 /*Multi usuario*/
-create table usuario( -- login de usuario
-	id_usuario varchar(10) primary key,
-    password_usuario varchar(35) not null
-    -- id_hotel varchar(10), /*Foranea*/
-    
-    -- foreign key (ID_Empresa) references Empresa(ID_Empresa)
-)engine = InnoDB default charset=latin1;
+-- drop table usuario;
+CREATE TABLE IF NOT EXISTS usuarios (
+UsuCodigo VARCHAR (20) PRIMARY KEY,
+UsuNombre VARCHAR(60),
+UsuContraseña VARCHAR(20),
+UsuCorrelativo int
+) ENGINE=InnoDB CHARACTER SET = latin1;
 
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -1071,14 +1071,13 @@ foreign key(id_empleado) references
 empleado_contratado(id_empleado)
 )engine = InnoDB default charset=latin1;
 
+-- drop table bitacora;
 create table bitacora(
 id_bitacora int primary key auto_increment,
 id_usuario varchar(35) not null,
 descripcion varchar(200),
 fecha date not null,
-hora time not null,
-foreign key (id_usuario) references
-usuario_hoteleria(id_usuario)
+hora time not null
 )engine=InnoDB  default charset=latin1;
 
 create table registro_contable(
