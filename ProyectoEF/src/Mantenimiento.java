@@ -29,11 +29,12 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
             modelo.addColumn("ID Cliente");
             modelo.addColumn("ID Tipo Cliente");
             modelo.addColumn("Nombre Cliente");
+            modelo.addColumn("Nit");
             modelo.addColumn("Correo");
             modelo.addColumn("Telefono");
             modelo.addColumn("Direccion");
             tbl.setModel(modelo);
-            String[] dato = new String[6];
+            String[] dato = new String[7];
             while (rss4.next()) {
                 dato[0] = rss4.getString(1);
                 dato[1] = rss4.getString(2);
@@ -41,21 +42,56 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
                 dato[3] = rss4.getString(4);
                 dato[4] = rss4.getString(5);
                 dato[5] = rss4.getString(6);
-
+                dato[6] = rss4.getString(7);
                 modelo.addRow(dato);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e);
         }
     }
 
+        public void refrescar() {
+        try {
+            Connection cn = DriverManager.getConnection(MDI.BD, MDI.Usuario, MDI.Contraseña);
+            PreparedStatement psttt = cn.prepareStatement("select nombre from tipo_cliente ");
+            ResultSet rss = psttt.executeQuery();
 
+            cbox_tipo_cliente.removeAllItems();
+            cbox_tipo_cliente.addItem("Seleccione una opción");
+            while (rss.next()) {
+                cbox_tipo_cliente.addItem(rss.getString("nombre"));
+            }
+            tablas();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tablas();
+    }
+
+   public void iniciar_combo() {
+        try {
+            Connection cn = DriverManager.getConnection(MDI.BD, MDI.Usuario, MDI.Contraseña);
+            PreparedStatement psttt = cn.prepareStatement("select nombre from tipo_cliente ");
+            ResultSet rss = psttt.executeQuery();
+
+            cbox_tipo_cliente.addItem("Seleccione una opción");
+            while (rss.next()) {
+                cbox_tipo_cliente.addItem(rss.getString("nombre"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tablas();
+    }
     /**
      * Creates new form Mantenimiento
      */
     public Mantenimiento() {
         initComponents();
+        tablas();
+        iniciar_combo();
     }
 
     /**
@@ -383,7 +419,7 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
             pst.setString(6, txt_telefono.getText());
             pst.setString(7, txt_direccion.getText());
 
-            bitacora_guardar();
+            //bitacora_guardar();
             pst.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "¡REGISTRO EXITOSO!", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -397,6 +433,7 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
             tablas();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error en registro", "Warning", JOptionPane.WARNING_MESSAGE);
+            System.out.println(e);
         }
         refrescar();
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -437,7 +474,7 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
         }
 
         // tablas();
-        bitacora_buscar();
+        //bitacora_buscar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -457,7 +494,7 @@ public class Mantenimiento extends javax.swing.JInternalFrame {
 
             pst.executeUpdate();
 
-            bitacora_modificar();
+            //bitacora_modificar();
             JOptionPane.showMessageDialog(this, "¡MODIFICACION EXITOSA!", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             txt_nombre.setText("");
             txt_correo.setText("");
